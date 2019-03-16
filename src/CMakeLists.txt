@@ -10,4 +10,6 @@ add_library(MarbleMarcherSources
   Scores.h
   SelectRes.cpp
   SelectRes.h
+  Game.cpp
+  Game.h
 )
