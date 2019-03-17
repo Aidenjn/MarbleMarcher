@@ -41,7 +41,17 @@ public:
     int init();
     void loop(const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res);
 
-private:
+protected:
+    void handleEvent(sf::Event& event, const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res);
+    void main_menu_event(sf::Event& event, const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res);
+    void playing_event(sf::Event& event, const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res);
+    void paused_event(sf::Event& event, const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res);
+    void screen_saver_event(sf::Event& event, const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res);
+    void controls_event(sf::Event& event, const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res);
+    void levels_event(sf::Event& event, const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res);
+    void credits_event(sf::Event& event, const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res);
+    void gameUpdate(Scene& scene, Overlays& overlays, const sf::Vector2i& screen_center, sf::RenderWindow& window);
+    void updateOverlays(Overlays& overlays, sf::RenderWindow& window, Scene& scene);
     sf::Shader shader;
     sf::Font font;
     sf::Font font_mono;
@@ -53,13 +63,10 @@ private:
     sf::ContextSettings settings;
     sf::VideoMode screen_size;
     sf::Uint32 window_style;
-    // sf::RenderWindow window;
-    // sf::RenderTexture renderTexture;
-    // Scene scene;
-    // Overlays overlays;
     sf::Clock clock;
     float smooth_fps;
     int lag_ms;
+    float mouse_wheel;
 
 
 };
