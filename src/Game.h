@@ -42,14 +42,14 @@ public:
     void loop(const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res);
 
 protected:
-    void handleEvent(sf::Event& event, const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res);
-    void main_menu_event(sf::Event& event, const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res);
-    void playing_event(sf::Event& event, const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res);
-    void paused_event(sf::Event& event, const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res);
-    void screen_saver_event(sf::Event& event, const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res);
-    void controls_event(sf::Event& event, const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res);
-    void levels_event(sf::Event& event, const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res);
-    void credits_event(sf::Event& event, const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res);
+    void handleEvent(sf::Event& event, sf::RenderWindow& window, Scene& scene, Overlays& overlays);
+    void main_menu_event(sf::Event& event, sf::RenderWindow& window, Scene& scene, Overlays& overlays);
+    void playing_event(sf::Event& event, sf::RenderWindow& window, Scene& scene);
+    void paused_event(sf::Event& event, sf::RenderWindow& window, Scene& scene, Overlays& overlays);
+    void screen_saver_event(sf::Event& event, Scene& scene);
+    void controls_event(sf::Event& event, Scene& scene, Overlays& overlays);
+    void levels_event(sf::Event& event, sf::RenderWindow& window, Scene& scene, Overlays& overlays);
+    void credits_event(sf::Event& event, sf::RenderWindow& window, Scene& scene);
     void gameUpdate(Scene& scene, Overlays& overlays, const sf::Vector2i& screen_center, sf::RenderWindow& window);
     void updateOverlays(Overlays& overlays, sf::RenderWindow& window, Scene& scene);
     sf::Shader shader;

@@ -181,7 +181,7 @@ int Game::run(){
     return 0;
 }
 
-void Game::main_menu_event(sf::Event& event, const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res){
+void Game::main_menu_event(sf::Event& event, sf::RenderWindow& window, Scene& scene, Overlays& overlays){
     if (event.type == sf::Event::KeyPressed) {
       const sf::Keyboard::Key keycode = event.key.code;
       if (event.key.code < 0 || event.key.code >= sf::Keyboard::KeyCount) { return; }
@@ -228,7 +228,7 @@ void Game::main_menu_event(sf::Event& event, const Resolution* resolution, sf::R
     }
 }
 
-void Game::playing_event(sf::Event& event, const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res){
+void Game::playing_event(sf::Event& event, sf::RenderWindow& window, Scene& scene){
     if (event.type == sf::Event::KeyPressed) {
       const sf::Keyboard::Key keycode = event.key.code;
       if (event.key.code < 0 || event.key.code >= sf::Keyboard::KeyCount) { return; }
@@ -258,7 +258,7 @@ void Game::playing_event(sf::Event& event, const Resolution* resolution, sf::Ren
     }
 }
 
-void Game::paused_event(sf::Event& event, const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res){
+void Game::paused_event(sf::Event& event, sf::RenderWindow& window, Scene& scene, Overlays& overlays){
     if (event.type == sf::Event::KeyPressed) {
       const sf::Keyboard::Key keycode = event.key.code;
       if (event.key.code < 0 || event.key.code >= sf::Keyboard::KeyCount) { return; }
@@ -316,7 +316,7 @@ void Game::paused_event(sf::Event& event, const Resolution* resolution, sf::Rend
     }
 }
 
-void Game::screen_saver_event(sf::Event& event, const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res){
+void Game::screen_saver_event(sf::Event& event, Scene& scene){
     if (event.type == sf::Event::KeyPressed) {
       const sf::Keyboard::Key keycode = event.key.code;
       if (event.key.code < 0 || event.key.code >= sf::Keyboard::KeyCount) { return; }
@@ -344,7 +344,7 @@ void Game::screen_saver_event(sf::Event& event, const Resolution* resolution, sf
     }
 }
 
-void Game::controls_event(sf::Event& event, const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res){
+void Game::controls_event(sf::Event& event, Scene& scene, Overlays& overlays){
     if (event.type == sf::Event::KeyPressed) {
       const sf::Keyboard::Key keycode = event.key.code;
       if (event.key.code < 0 || event.key.code >= sf::Keyboard::KeyCount) { return; }
@@ -374,7 +374,7 @@ void Game::controls_event(sf::Event& event, const Resolution* resolution, sf::Re
     }
 }
 
-void Game::levels_event(sf::Event& event, const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res){
+void Game::levels_event(sf::Event& event, sf::RenderWindow& window, Scene& scene, Overlays& overlays){
     if (event.type == sf::Event::KeyPressed) {
       const sf::Keyboard::Key keycode = event.key.code;
       if (event.key.code < 0 || event.key.code >= sf::Keyboard::KeyCount) { return; }
@@ -415,7 +415,7 @@ void Game::levels_event(sf::Event& event, const Resolution* resolution, sf::Rend
     }
 }
 
-void Game::credits_event(sf::Event& event, const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res){
+void Game::credits_event(sf::Event& event, sf::RenderWindow& window, Scene& scene){
     if (event.type == sf::Event::KeyPressed) {
       const sf::Keyboard::Key keycode = event.key.code;
       if (event.key.code < 0 || event.key.code >= sf::Keyboard::KeyCount) { return; }
@@ -440,27 +440,27 @@ void Game::credits_event(sf::Event& event, const Resolution* resolution, sf::Ren
     }
 }
 
-void Game::handleEvent(sf::Event& event, const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res){
+void Game::handleEvent(sf::Event& event, sf::RenderWindow& window, Scene& scene, Overlays& overlays){
     if(game_mode == MAIN_MENU){
-        main_menu_event(event, resolution, window, renderTexture, screen_center, scene, overlays, window_res);
+        main_menu_event(event, window, scene, overlays);
     }
     else if(game_mode == PLAYING){
-        playing_event(event, resolution, window, renderTexture, screen_center, scene, overlays, window_res);
+        playing_event(event, window, scene);
     }
     else if(game_mode == PAUSED){
-        paused_event(event, resolution, window, renderTexture, screen_center, scene, overlays, window_res);
+        paused_event(event, window, scene, overlays);
     }
     else if(game_mode == SCREEN_SAVER){
-        screen_saver_event(event, resolution, window, renderTexture, screen_center, scene, overlays, window_res);
+        screen_saver_event(event, scene);
     }
     else if(game_mode == CONTROLS){
-        controls_event(event, resolution, window, renderTexture, screen_center, scene, overlays, window_res);
+        controls_event(event, scene, overlays);
     }
     else if(game_mode == LEVELS){
-        levels_event(event, resolution, window, renderTexture, screen_center, scene, overlays, window_res);
+        levels_event(event, window, scene, overlays);
     }
     else if(game_mode == CREDITS){
-        credits_event(event, resolution, window, renderTexture, screen_center, scene, overlays, window_res);
+        credits_event(event, window, scene);
     }
 }
 
@@ -538,7 +538,7 @@ void Game::loop(const Resolution* resolution, sf::RenderWindow& window, sf::Rend
             break;
           }
           else{
-              handleEvent(event, resolution, window, renderTexture, screen_center, scene, overlays, window_res);
+              handleEvent(event, window, scene, overlays);
           }
       }
       //Check if the game was beat
