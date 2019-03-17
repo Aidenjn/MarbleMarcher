@@ -41,6 +41,15 @@ public:
     int init();
     void loop(const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res);
 
+	 void paused_event_Escape(sf::RenderWindow&, Scene&, Overlay&);
+	 void paused_event_MousePressedLeft_Continue(sf::RenderWindow&, Scene&, Overlays&);
+	 void paused_event_MousePressedLeft_Quit(sf::RenderWindow&, Scene&, Overlays&);
+	 void paused_event_MousePressedLeft_Restart(sf::RenderWindow&, Scene&, Overlays&);
+	 void paused_event_MousePressedLeft_Music(sf::RenderWindow&, Scene&, Overlays&);
+	
+	
+	
+
 protected:
     void handleEvent(sf::Event& event, sf::RenderWindow& window, Scene& scene, Overlays& overlays);
     void main_menu_event(sf::Event& event, sf::RenderWindow& window, Scene& scene, Overlays& overlays);
