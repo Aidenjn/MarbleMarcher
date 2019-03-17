@@ -8,27 +8,6 @@
 #define ERROR_MSG(x) std::cerr << x << std::endl;
 #endif
 
-
-static const float mouse_sensitivity = 0.005f;
-static const float wheel_sensitivity = 0.2f;
-static const float music_vol = 75.0f;
-
-enum GameMode {
-  MAIN_MENU,
-  PLAYING,
-  PAUSED,
-  SCREEN_SAVER,
-  CONTROLS,
-  LEVELS,
-  CREDITS
-};
-
-//Global variables
-static sf::Vector2i mouse_pos;
-static bool all_keys[sf::Keyboard::KeyCount] = { 0 };
-static bool lock_mouse = false;
-static GameMode game_mode = MAIN_MENU;
-
 float GetVol() {
   if (!music_on) {
     return 0.0f;
@@ -58,14 +37,19 @@ int dirExists(const char *path) {
   return 0;
 }
 
-int Game::run(){
+// Game::Game(){
+//     int r = init();
+//
+//
+// }
+
+int Game::init(){
     //Make sure shader is supported
     if (!sf::Shader::isAvailable()) {
       ERROR_MSG("Graphics card does not support shaders");
       return 1;
     }
     //Load the vertex shader
-    sf::Shader shader;
     if (!shader.loadFromFile(vert_glsl, sf::Shader::Vertex)) {
       ERROR_MSG("Failed to compile vertex shader");
       return 1;
@@ -77,29 +61,23 @@ int Game::run(){
     }
 
     //Load the font
-    sf::Font font;
     if (!font.loadFromFile(Orbitron_Bold_ttf)) {
       ERROR_MSG("Unable to load font");
       return 1;
     }
     //Load the mono font
-    sf::Font font_mono;
     if (!font_mono.loadFromFile(Inconsolata_Bold_ttf)) {
       ERROR_MSG("Unable to load mono font");
       return 1;
     }
 
     //Load the music
-    sf::Music menu_music;
     menu_music.openFromFile(menu_ogg);
     menu_music.setLoop(true);
-    sf::Music level1_music;
     level1_music.openFromFile(level1_ogg);
     level1_music.setLoop(true);
-    sf::Music level2_music;
     level2_music.openFromFile(level2_ogg);
     level2_music.setLoop(true);
-    sf::Music credits_music;
     credits_music.openFromFile(credits_ogg);
     credits_music.setLoop(true);
 
@@ -126,22 +104,23 @@ int Game::run(){
     //Load scores if available
     high_scores.Load(save_file);
 
+    return 0;
+}
+
+int Game::run(){
     //Have user select the resolution
     SelectRes select_res(&font_mono);
     const Resolution* resolution = select_res.Run();
-    bool fullscreen = select_res.FullScreen();
+    fullscreen = select_res.FullScreen();
     if (resolution == nullptr) {
       return 0;
     }
 
     //GL settings
-    sf::ContextSettings settings;
     settings.majorVersion = 2;
     settings.minorVersion = 0;
 
     //Create the window
-    sf::VideoMode screen_size;
-    sf::Uint32 window_style;
     const sf::Vector2i screen_center(resolution->width / 2, resolution->height / 2);
     if (fullscreen) {
       screen_size = sf::VideoMode::getDesktopMode();
@@ -182,9 +161,33 @@ int Game::run(){
     menu_music.play();
 
     //Main loop
-    sf::Clock clock;
-    float smooth_fps = 60.0f;
-    int lag_ms = 0;
+    smooth_fps = 60.0f;
+    lag_ms = 0;
+    loop(resolution, window, renderTexture, screen_center, scene, overlays, window_res);
+
+    //Stop all music
+    menu_music.stop();
+    level1_music.stop();
+    level2_music.stop();
+    credits_music.stop();
+
+    //Get the directory for saving and loading high scores
+  #ifdef _WIN32
+    const std::string save_dir = std::string(std::getenv("APPDATA")) + "\\MarbleMarcher";
+  #else
+    const std::string save_dir = std::string(std::getenv("HOME")) + "/.MarbleMarcher";
+  #endif
+
+    const std::string save_file = save_dir + "/scores.bin";
+    high_scores.Save(save_file);
+
+  #ifdef _DEBUG
+    system("pause");
+  #endif
+    return 0;
+}
+
+void Game::loop(const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res){
     while (window.isOpen()) {
       sf::Event event;
       float mouse_wheel = 0.0f;
@@ -449,16 +452,4 @@ int Game::run(){
         }
       }
     }
-
-    //Stop all music
-    menu_music.stop();
-    level1_music.stop();
-    level2_music.stop();
-    credits_music.stop();
-    high_scores.Save(save_file);
-
-  #ifdef _DEBUG
-    system("pause");
-  #endif
-    return 0;
 }
