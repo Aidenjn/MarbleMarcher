@@ -239,16 +239,22 @@ void Game::main_menu_event(sf::Event& event, sf::RenderWindow& window, Scene& sc
     }
 }
 
+// USE THIS FUNCTION TO PAUSE
+void Game::pause(sf::RenderWindow &window, Scene &scene){
+          game_mode = PAUSED;
+          scene.GetCurMusic().setVolume(GetVol());
+          UnlockMouse(window);
+          scene.SetExposure(0.5f);
+}
+
 void Game::playing_event(sf::Event& event, sf::RenderWindow& window, Scene& scene){
     if (event.type == sf::Event::KeyPressed) {
       const sf::Keyboard::Key keycode = event.key.code;
       if (event.key.code < 0 || event.key.code >= sf::Keyboard::KeyCount) { return; }
       if (keycode == sf::Keyboard::Escape) {
-          game_mode = PAUSED;
-          scene.GetCurMusic().setVolume(GetVol());
-          UnlockMouse(window);
-          scene.SetExposure(0.5f);
-      }else if (keycode == sf::Keyboard::R) {
+			pause(window, scene)
+
+     }else if (keycode == sf::Keyboard::R) {
           scene.ResetLevel();
       }
       all_keys[keycode] = true;
