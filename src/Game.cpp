@@ -193,7 +193,11 @@ void Game::main_menu_event_Play(sf::RenderWindow& window, Scene &scene){
             scene.GetCurMusic().play();
             LockMouse(window);
 }
- 
+ void Game::main_menu_event_Level(Scene &scene){
+				game_mode = LEVELS;
+            scene.SetExposure(0.5f);
+ }
+
 void Game::main_menu_event(sf::Event& event, sf::RenderWindow& window, Scene& scene, Overlays& overlays){
     if (event.type == sf::Event::KeyPressed) {
       const sf::Keyboard::Key keycode = event.key.code;
@@ -216,8 +220,7 @@ void Game::main_menu_event(sf::Event& event, sf::RenderWindow& window, Scene& sc
 			 } else if (selected == Overlays::CONTROLS) {
             game_mode = CONTROLS;
           } else if (selected == Overlays::LEVELS) {
-            game_mode = LEVELS;
-            scene.SetExposure(0.5f);
+				main_menu_event_Level(scene);
           } else if (selected == Overlays::SCREEN_SAVER) {
             game_mode = SCREEN_SAVER;
             scene.SetMode(Scene::SCREEN_SAVER);
@@ -410,6 +413,23 @@ void Game::controls_event(sf::Event& event, Scene& scene, Overlays& overlays){
     }
 }
 
+void Game::choose_level(sf::RenderWindow &window, Scene &scene, const Overlays::Texts& selected){
+			if (selected == Overlays::BACK2) {
+            game_mode = MAIN_MENU;
+            scene.SetExposure(1.0f);
+          } else if (selected >= Overlays::L0 && selected <= Overlays::L14) {
+            if (high_scores.HasUnlocked(selected - Overlays::L0)) {
+              game_mode = PLAYING;
+              menu_music.stop();
+              scene.SetExposure(1.0f);
+              scene.StartSingle(selected - Overlays::L0);
+              scene.GetCurMusic().setVolume(GetVol());
+              scene.GetCurMusic().play();
+              LockMouse(window);
+            }
+          }
+}
+
 void Game::levels_event(sf::Event& event, sf::RenderWindow& window, Scene& scene, Overlays& overlays){
     if (event.type == sf::Event::KeyPressed) {
       const sf::Keyboard::Key keycode = event.key.code;
@@ -427,20 +447,7 @@ void Game::levels_event(sf::Event& event, sf::RenderWindow& window, Scene& scene
         if (event.mouseButton.button == sf::Mouse::Left) {
           mouse_pos = sf::Vector2i(event.mouseButton.x, event.mouseButton.y);
           const Overlays::Texts selected = overlays.GetOption(Overlays::L0, Overlays::BACK2);
-          if (selected == Overlays::BACK2) {
-            game_mode = MAIN_MENU;
-            scene.SetExposure(1.0f);
-          } else if (selected >= Overlays::L0 && selected <= Overlays::L14) {
-            if (high_scores.HasUnlocked(selected - Overlays::L0)) {
-              game_mode = PLAYING;
-              menu_music.stop();
-              scene.SetExposure(1.0f);
-              scene.StartSingle(selected - Overlays::L0);
-              scene.GetCurMusic().setVolume(GetVol());
-              scene.GetCurMusic().play();
-              LockMouse(window);
-            }
-          }
+			 choose_level(window, scene, selected); 
         }
     }else if (event.type == sf::Event::MouseButtonReleased) {
       mouse_pos = sf::Vector2i(event.mouseButton.x, event.mouseButton.y);
