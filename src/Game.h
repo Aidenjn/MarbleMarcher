@@ -37,9 +37,21 @@ static GameMode game_mode = MAIN_MENU;
 
 class Game{
 public:
-    int run();
+    int run(const Resolution *);
     int init();
     void loop(const Resolution* resolution, sf::RenderWindow& window, sf::RenderTexture& renderTexture, const sf::Vector2i& screen_center, Scene& scene, Overlays& overlays, const sf::Glsl::Vec2& window_res);
+
+	 void paused_event_Escape(sf::RenderWindow&, Scene&, Overlays&);
+	 void paused_event_MousePressedLeft_Continue(sf::RenderWindow&, Scene&, Overlays&);
+	 void paused_event_MousePressedLeft_Quit(sf::RenderWindow&, Scene&, Overlays&);
+	 void paused_event_MousePressedLeft_Restart(sf::RenderWindow&, Scene&, Overlays&);
+	 void paused_event_MousePressedLeft_Music(sf::RenderWindow&, Scene&, Overlays&);
+    void main_menu_event_Play(sf::RenderWindow&, Scene &scene);
+	 const Resolution* get_resolution();
+	 void main_menu_event_Level(Scene &);		
+	 	
+	 void choose_level(sf::RenderWindow &window, Scene &scene, const Overlays::Texts& selected);
+	
 
 protected:
     void handleEvent(sf::Event& event, sf::RenderWindow& window, Scene& scene, Overlays& overlays);
