@@ -101,16 +101,15 @@ int Game::init(){
     return 0;
 }
 
-const Resolution* get_resolution(){
+const Resolution* Game::get_resolution(){
     SelectRes select_res(&font_mono);
     const Resolution* resolution = select_res.Run();
     fullscreen = select_res.FullScreen();
 	 return resolution;
 }
 
-int Game::run(){
+int Game::run(const Resolution* resolution){
     //Have user select the resolution
-	 const Resolution* resolution = get_resolution();
 	 if (resolution == nullptr) {
       return 0;
     }
