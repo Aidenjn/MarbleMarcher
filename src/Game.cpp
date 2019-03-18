@@ -101,12 +101,17 @@ int Game::init(){
     return 0;
 }
 
-int Game::run(){
-    //Have user select the resolution
+const Resolution* get_resolution(){
     SelectRes select_res(&font_mono);
     const Resolution* resolution = select_res.Run();
     fullscreen = select_res.FullScreen();
-    if (resolution == nullptr) {
+	 return resolution;
+}
+
+int Game::run(){
+    //Have user select the resolution
+	 const Resolution* resolution = get_resolution();
+	 if (resolution == nullptr) {
       return 0;
     }
 
@@ -181,6 +186,15 @@ int Game::run(){
     return 0;
 }
 
+void Game::main_menu_event_Play(sf::RenderWindow& window, Scene &scene){
+				game_mode = PLAYING;
+            menu_music.stop();
+            scene.StartNewGame();
+            scene.GetCurMusic().setVolume(GetVol());
+            scene.GetCurMusic().play();
+            LockMouse(window);
+}
+ 
 void Game::main_menu_event(sf::Event& event, sf::RenderWindow& window, Scene& scene, Overlays& overlays){
     if (event.type == sf::Event::KeyPressed) {
       const sf::Keyboard::Key keycode = event.key.code;
@@ -199,13 +213,8 @@ void Game::main_menu_event(sf::Event& event, sf::RenderWindow& window, Scene& sc
         mouse_pos = sf::Vector2i(event.mouseButton.x, event.mouseButton.y);
           const Overlays::Texts selected = overlays.GetOption(Overlays::PLAY, Overlays::EXIT);
           if (selected == Overlays::PLAY) {
-            game_mode = PLAYING;
-            menu_music.stop();
-            scene.StartNewGame();
-            scene.GetCurMusic().setVolume(GetVol());
-            scene.GetCurMusic().play();
-            LockMouse(window);
-          } else if (selected == Overlays::CONTROLS) {
+				main_menu_event_Play(window, scene);
+			 } else if (selected == Overlays::CONTROLS) {
             game_mode = CONTROLS;
           } else if (selected == Overlays::LEVELS) {
             game_mode = LEVELS;

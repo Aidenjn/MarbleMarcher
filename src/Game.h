@@ -46,7 +46,9 @@ public:
 	 void paused_event_MousePressedLeft_Quit(sf::RenderWindow&, Scene&, Overlays&);
 	 void paused_event_MousePressedLeft_Restart(sf::RenderWindow&, Scene&, Overlays&);
 	 void paused_event_MousePressedLeft_Music(sf::RenderWindow&, Scene&, Overlays&);
-	
+    void main_menu_event_Play(sf::RenderWindow&, Scene &scene);
+	 const Resolution* get_resolution();
+		
 	
 	
 
