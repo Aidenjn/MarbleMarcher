@@ -52,6 +52,10 @@ public:
 	 	
 	 void choose_level(sf::RenderWindow &window, Scene &scene, const Overlays::Texts& selected);
 	 void pause(sf::RenderWindow &window, Scene &scene);	
+     sf::RenderWindow* gameWindow;
+     Scene* gameScene;
+     Overlays* gameOverlays;
+     GameMode get_GameMode();
 
 protected:
     void handleEvent(sf::Event& event, sf::RenderWindow& window, Scene& scene, Overlays& overlays);

@@ -8,6 +8,10 @@
 #define ERROR_MSG(x) std::cerr << x << std::endl;
 #endif
 
+GameMode Game::get_GameMode() {
+    return game_mode;
+}
+
 float GetVol() {
   if (!music_on) {
     return 0.0f;
@@ -146,17 +150,23 @@ int Game::run(const Resolution* resolution){
       window.setActive(false);
     }
 
+    gameWindow = &window;
+
     //Create the fractal scene
     Scene scene(&level1_music, &level2_music);
     const sf::Glsl::Vec2 window_res((float)resolution->width, (float)resolution->height);
     shader.setUniform("iResolution", window_res);
     scene.Write(shader);
 
+    gameScene = &scene;
+
     //Create the menus
     Overlays overlays(&font, &font_mono);
     overlays.SetScale(float(screen_size.width) / 1280.0f);
     menu_music.setVolume(GetVol());
     menu_music.play();
+
+    gameOverlays = &overlays;
 
     //Main loop
     smooth_fps = 60.0f;
@@ -252,7 +262,7 @@ void Game::playing_event(sf::Event& event, sf::RenderWindow& window, Scene& scen
       const sf::Keyboard::Key keycode = event.key.code;
       if (event.key.code < 0 || event.key.code >= sf::Keyboard::KeyCount) { return; }
       if (keycode == sf::Keyboard::Escape) {
-			pause(window, scene)
+			pause(window, scene);
 
      }else if (keycode == sf::Keyboard::R) {
           scene.ResetLevel();
